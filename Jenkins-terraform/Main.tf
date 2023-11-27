@@ -58,11 +58,13 @@ resource "aws_security_group" "Jenkins-sg" {
     Name = "Jenkins-sg"
   }
 }
-
+variable "ami_key_pair_name" {
+        default = "tetris"
+}
 resource "aws_instance" "web" {
   ami                    = "ami-0f5ee92e2d63afc18"
   instance_type          = "t2.large"
-  key_name               = "Mumbai"
+  key_name               = var.ami_key_pair_name
   vpc_security_group_ids = [aws_security_group.Jenkins-sg.id]
   user_data              = templatefile("./install_jenkins.sh", {})
   iam_instance_profile   = aws_iam_instance_profile.example_profile.name
